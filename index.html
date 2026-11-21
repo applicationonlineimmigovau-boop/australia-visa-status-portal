@@ -1,54 +1,87 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Australia Visa Status Portal</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#17243b}
-header{background:#071d3b;color:white;padding:22px 18px}
+body{margin:0;font-family:Arial;background:#f3f6fb;color:#17243b}
+header{background:#071d3b;color:white;padding:22px}
 .brand{font-size:21px;font-weight:bold}
-header p{margin:8px 0 0;color:#cbd7e8;font-size:13px}
-.hero{background:linear-gradient(135deg,#09264c,#087b65);color:white;padding:42px 20px;text-align:center}
-.hero h1{font-size:27px;margin:0 0 12px}
-.hero p{font-size:14px;line-height:1.6}
+.hero{background:linear-gradient(135deg,#09264c,#087b65);color:white;padding:40px 18px;text-align:center}
+.hero h1{font-size:27px}
 main{max-width:520px;margin:-15px auto 30px;padding:0 16px}
 .panel{background:white;border-radius:15px;padding:24px;box-shadow:0 8px 28px #152c5015}
-.panel h2{margin:0 0 8px;font-size:21px}
-.panel p{color:#65738a;font-size:14px;line-height:1.5}
 label{display:block;font-weight:bold;font-size:13px;margin:18px 0 8px}
 input{width:100%;padding:14px;border:1px solid #d5ddea;border-radius:9px;font-size:15px}
 button{width:100%;padding:15px;margin-top:20px;border:0;border-radius:9px;background:#087b65;color:white;font-weight:bold;font-size:16px}
-.notice{margin-top:20px;background:#f0f5fa;padding:13px;border-radius:9px;font-size:12px;color:#52627a;line-height:1.6}
+#result{margin-top:20px;padding:14px;border-radius:9px;background:#f0f5fa;line-height:1.7;display:none}
+.notice{margin-top:20px;background:#f0f5fa;padding:13px;border-radius:9px;font-size:12px;line-height:1.6;color:#52627a}
 footer{text-align:center;padding:20px;color:#778398;font-size:12px}
 </style>
 </head>
 <body>
-<header>
-<div class="brand">AUSTRALIA VISA PORTAL</div>
-<p>Application Status & Information</p>
-</header>
+<header><div class="brand">AUSTRALIA VISA PORTAL</div></header>
 <section class="hero">
 <h1>Check Your Application Status</h1>
-<p>Welcome to our independent application information portal.</p>
+<p>Independent Application Information Portal</p>
 </section>
 <main>
 <div class="panel">
 <h2>Application Status Check</h2>
-<p>Enter your application details below.</p>
-<form onsubmit="event.preventDefault();alert('Status lookup will be available after secure database connection.');">
+<form id="checkForm">
 <label for="app">Application ID</label>
-<input id="app" type="text" placeholder="Enter your Application ID" required>
+<input id="app" required placeholder="Enter Application ID">
 <label for="email">Email Address</label>
-<input id="email" type="email" placeholder="Enter your registered email" required>
-<button type="submit">CHECK STATUS</button>
+<input id="email" type="email" required placeholder="Enter registered email">
+<button id="checkButton" type="submit">CHECK STATUS</button>
 </form>
-<div class="notice">
-<strong>Important Notice:</strong> This is an independent private application information portal. It is not an official Australian Government website and is not affiliated with the Department of Home Affairs.
-</div>
+<div id="result" role="status"></div>
+<div class="notice"><b>Important:</b> This is an independent private portal, not an official Australian Government website and is not affiliated with the Department of Home Affairs.</div>
 </div>
 </main>
 <footer>© 2026 Australia Visa Portal</footer>
+<script>
+const SUPABASE_URL = "https://vnngixpwhaijcsfknvsr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_krrLCwAPYmW1qyxweqe9gg_LX8Vitoi";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.getElementById("checkForm").addEventListener("submit", async function(e){
+ e.preventDefault();
+ const result = document.getElementById("result");
+ const button = document.getElementById("checkButton");
+ result.style.display = "block";
+ result.textContent = "Checking application...";
+ button.disabled = true;
+ try {
+  const {data,error} = await db.rpc("check_application_status", {
+   p_application_id: document.getElementById("app").value.trim(),
+   p_email: document.getElementById("email").value.trim()
+  });
+  if(error) throw error;
+  if(!data || data.length === 0){
+   result.textContent = "No matching application found. Please check your details.";
+  } else {
+   const a = data[0];
+   result.innerHTML = "";
+   [["Application ID",a.application_id],["Name",a.full_name],["Visa Type",a.visa_type],["Status",a.status],["Last Updated",new Date(a.updated_at).toLocaleString("en-GB")]].forEach(([label,value])=>{
+    const row=document.createElement("p");
+    const strong=document.createElement("strong");
+    strong.textContent=label+": ";
+    row.append(strong,document.createTextNode(value || "Not available"));
+    result.appendChild(row);
+   });
+  }
+ } catch(err) {
+  result.textContent = "Unable to check status. Please try again later.";
+  console.error(err);
+ } finally {
+  button.disabled = false;
+ }
+});
+</script>
 </body>
 </html>
