@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,6 +81,57 @@ document.getElementById("checkForm").addEventListener("submit", async function(e
   button.disabled = false;
  }
 });
+</script>
+<div id="adminLogin" style="max-width:500px;margin:30px auto;padding:20px;background:white;border-radius:12px">
+  <h2>Admin Login</h2>
+  <input id="adminEmail" type="email" placeholder="Admin Email" style="width:100%;padding:12px;margin:8px 0">
+  <input id="adminPassword" type="password" placeholder="Password" style="width:100%;padding:12px;margin:8px 0">
+  <button onclick="adminLoginNow()" style="width:100%;padding:13px;background:#087b65;color:white;border:0;border-radius:8px">
+    LOGIN
+  </button>
+  <p id="adminMessage"></p>
+</div>
+
+<div id="adminPanel" style="display:none;padding:20px">
+  <h2>Admin Panel</h2>
+  <p>Admin login successful.</p>
+  <button onclick="adminLogout()">Logout</button>
+</div>
+
+<script>
+async function adminLoginNow() {
+  const msg = document.getElementById("adminMessage");
+  msg.textContent = "Checking...";
+  const email = document.getElementById("adminEmail").value.trim();
+  const password = document.getElementById("adminPassword").value;
+
+  const {data, error} = await db.auth.signInWithPassword({email, password});
+  if (error) {
+    msg.textContent = "Login failed. Check your email and password.";
+    return;
+  }
+
+  const {data: admin, error: adminError} = await db
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", data.user.id)
+    .maybeSingle();
+
+  if (adminError || !admin) {
+    await db.auth.signOut();
+    msg.textContent = "This account is not an authorized admin.";
+    return;
+  }
+
+  document.getElementById("adminLogin").style.display = "none";
+  document.getElementById("adminPanel").style.display = "block";
+}
+
+async function adminLogout() {
+  await db.auth.signOut();
+  document.getElementById("adminPanel").style.display = "none";
+  document.getElementById("adminLogin").style.display = "block";
+}
 </script>
 </body>
 </html>
