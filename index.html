@@ -1,224 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Australia Visa Status Portal</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: #17243b;
-      background: #f4f7fb;
-    }
-
-    header {
-      background: #102b50;
-      color: white;
-      padding: 18px 20px;
-    }
-
-    .header-inner {
-      max-width: 1000px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .brand {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .notice {
-      font-size: 12px;
-      color: #dce8f5;
-      margin-top: 5px;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 55px 20px 35px;
-      background: linear-gradient(135deg, #102b50, #1b5680);
-      color: white;
-    }
-
-    .hero h1 {
-      margin: 0 0 14px;
-      font-size: clamp(28px, 6vw, 42px);
-    }
-
-    .hero p {
-      max-width: 620px;
-      margin: auto;
-      line-height: 1.6;
-      color: #e5edf6;
-    }
-
-    main {
-      max-width: 720px;
-      margin: -18px auto 40px;
-      padding: 0 16px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 8px 28px rgba(16, 43, 80, 0.10);
-    }
-
-    .card h2 {
-      margin-top: 0;
-      font-size: 24px;
-    }
-
-    .intro {
-      color: #5b687a;
-      line-height: 1.5;
-    }
-
-    label {
-      display: block;
-      margin: 18px 0 8px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 22px;
-      padding: 15px;
-      border: 0;
-      border-radius: 8px;
-      background: #1764a0;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .message {
-      display: none;
-      margin-top: 16px;
-      padding: 12px;
-      border-radius: 8px;
-      background: #fff4d6;
-      color: #684b00;
-      line-height: 1.5;
-    }
-
-    .disclaimer {
-      margin-top: 22px;
-      font-size: 13px;
-      color: #687589;
-      line-height: 1.6;
-    }
-
-    footer {
-      text-align: center;
-      padding: 22px 16px;
-      color: #687589;
-      font-size: 13px;
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 22px 18px;
-      }
-
-      .brand {
-        font-size: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Australia Visa Status Portal</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#17243b}
+header{background:#071d3b;color:white;padding:22px 18px}
+.brand{font-size:21px;font-weight:bold}
+header p{margin:8px 0 0;color:#cbd7e8;font-size:13px}
+.hero{background:linear-gradient(135deg,#09264c,#087b65);color:white;padding:42px 20px;text-align:center}
+.hero h1{font-size:27px;margin:0 0 12px}
+.hero p{font-size:14px;line-height:1.6}
+main{max-width:520px;margin:-15px auto 30px;padding:0 16px}
+.panel{background:white;border-radius:15px;padding:24px;box-shadow:0 8px 28px #152c5015}
+.panel h2{margin:0 0 8px;font-size:21px}
+.panel p{color:#65738a;font-size:14px;line-height:1.5}
+label{display:block;font-weight:bold;font-size:13px;margin:18px 0 8px}
+input{width:100%;padding:14px;border:1px solid #d5ddea;border-radius:9px;font-size:15px}
+button{width:100%;padding:15px;margin-top:20px;border:0;border-radius:9px;background:#087b65;color:white;font-weight:bold;font-size:16px}
+.notice{margin-top:20px;background:#f0f5fa;padding:13px;border-radius:9px;font-size:12px;color:#52627a;line-height:1.6}
+footer{text-align:center;padding:20px;color:#778398;font-size:12px}
+</style>
 </head>
 <body>
-
-  <header>
-    <div class="header-inner">
-      <div>
-        <div class="brand">Australia Visa Status Portal</div>
-        <div class="notice">Independent application status service</div>
-      </div>
-    </div>
-  </header>
-
-  <section class="hero">
-    <h1>Check Your Application Status</h1>
-    <p>
-      A simple portal to view application updates provided by the
-      portal administrator.
-    </p>
-  </section>
-
-  <main>
-    <section class="card">
-      <h2>Visa Status Check</h2>
-      <p class="intro">
-        Enter your registered Application ID and email address to check
-        your application status.
-      </p>
-
-      <form id="status-form">
-        <label for="application-id">Application ID</label>
-        <input
-          id="application-id"
-          name="application-id"
-          type="text"
-          placeholder="Enter your Application ID"
-          autocomplete="off"
-          required
-        >
-
-        <label for="email">Registered Email Address</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Enter your registered email"
-          autocomplete="off"
-          required
-        >
-
-        <button type="submit">Check Status</button>
-      </form>
-
-      <div class="message" id="message" role="status">
-        The status-check service is still being set up.
-        Please do not enter real application details yet.
-      </div>
-
-      <p class="disclaimer">
-        This is an independent private service and is not an Australian
-        Government website or an official visa decision service.
-        Application updates are provided by the portal administrator.
-      </p>
-    </section>
-  </main>
-
-  <footer>
-    Independent Application Status Portal
-  </footer>
-
-  <script>
-    document.getElementById("status-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      document.getElementById("message").style.display = "block";
-    });
-  </script>
-
+<header>
+<div class="brand">AUSTRALIA VISA PORTAL</div>
+<p>Application Status & Information</p>
+</header>
+<section class="hero">
+<h1>Check Your Application Status</h1>
+<p>Welcome to our independent application information portal.</p>
+</section>
+<main>
+<div class="panel">
+<h2>Application Status Check</h2>
+<p>Enter your application details below.</p>
+<form onsubmit="event.preventDefault();alert('Status lookup will be available after secure database connection.');">
+<label for="app">Application ID</label>
+<input id="app" type="text" placeholder="Enter your Application ID" required>
+<label for="email">Email Address</label>
+<input id="email" type="email" placeholder="Enter your registered email" required>
+<button type="submit">CHECK STATUS</button>
+</form>
+<div class="notice">
+<strong>Important Notice:</strong> This is an independent private application information portal. It is not an official Australian Government website and is not affiliated with the Department of Home Affairs.
+</div>
+</div>
+</main>
+<footer>© 2026 Australia Visa Portal</footer>
 </body>
-  </html>
+</html>
