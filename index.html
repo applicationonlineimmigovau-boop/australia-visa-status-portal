@@ -133,5 +133,34 @@ async function adminLogout() {
   document.getElementById("adminLogin").style.display = "block";
 }
 </script>
+ <div id="resetPasswordBox" style="display:none;max-width:500px;margin:30px auto;padding:20px;background:white;border-radius:12px">
+  <h2>Reset Admin Password</h2>
+  <input id="newPassword" type="password" placeholder="Enter new password" style="width:100%;padding:12px;margin:8px 0">
+  <button onclick="saveNewPassword()" style="width:100%;padding:13px;background:#087b65;color:white;border:0;border-radius:8px">
+    Update Password
+  </button>
+  <p id="resetMessage"></p>
+</div>
+
+<script>
+async function saveNewPassword() {
+  const password = document.getElementById("newPassword").value;
+  const msg = document.getElementById("resetMessage");
+
+  if (password.length < 8) {
+    msg.textContent = "Password must be at least 8 characters.";
+    return;
+  }
+
+  const { error } = await db.auth.updateUser({ password });
+
+  if (error) {
+    msg.textContent = "Password update failed. Please try again.";
+    return;
+  }
+
+  msg.textContent = "Password updated successfully.";
+}
+</script>
 </body>
 </html>
