@@ -164,5 +164,10 @@ async function saveNewPassword() {
   msg.textContent = "Password updated successfully.";
 }
 </script>
+  <script>
+if (window.location.hash.includes("type=recovery")) {
+  document.getElementById("resetPasswordBox").style.display = "block";
+}
+  </script>
 </body>
 </html>
