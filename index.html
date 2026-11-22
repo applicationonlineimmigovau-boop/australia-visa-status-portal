@@ -47,7 +47,9 @@ footer{text-align:center;padding:20px;color:#778398;font-size:12px}
 const SUPABASE_URL = "https://vnngixpwhaijcsfknvsr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_krrLCwAPYmW1qyxweqe9gg_LX8Vitoi";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+if (window.location.hash.includes("type=recovery")) {
+  document.getElementById("resetPasswordBox").style.display = "block";
+}
 document.getElementById("checkForm").addEventListener("submit", async function(e){
  e.preventDefault();
  const result = document.getElementById("result");
