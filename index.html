@@ -119,11 +119,17 @@ async function adminLoginNow() {
     .eq("user_id", data.user.id)
     .maybeSingle();
 
-  if (adminError || !admin) {
-    await db.auth.signOut();
-    msg.textContent = "This account is not an authorized admin.";
-    return;
-  }
+  if (adminError) {
+  msg.textContent = "Admin check error: " + adminError.message;
+  await db.auth.signOut();
+  return;
+}
+
+if (!admin) {
+  await db.auth.signOut();
+  msg.textContent = "No admin record found for this account.";
+  return;
+}
 
   document.getElementById("adminLogin").style.display = "none";
   document.getElementById("adminPanel").style.display = "block";
