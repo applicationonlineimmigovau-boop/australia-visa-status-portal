@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,175 +6,350 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Australia Visa Status Portal</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#f3f6fb;color:#17243b}
-header{background:#071d3b;color:white;padding:22px}
-.brand{font-size:21px;font-weight:bold}
-.hero{background:linear-gradient(135deg,#09264c,#087b65);color:white;padding:40px 18px;text-align:center}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f3f6fb;
+ color:#17243b;
+}
+header{
+ background:#071d3b;
+ color:white;
+ padding:17px;
+ display:flex;
+ align-items:center;
+ gap:15px;
+}
+.menuBtn{
+ background:none;
+ color:white;
+ border:0;
+ width:35px;
+ padding:5px;
+ margin:0;
+ font-size:27px;
+ cursor:pointer;
+}
+.brand{
+ font-size:19px;
+ font-weight:bold;
+ flex:1;
+}
+.menu{
+ display:none;
+ background:white;
+ box-shadow:0 8px 20px #0002;
+}
+.menu button{
+ display:block;
+ width:100%;
+ text-align:left;
+ background:white;
+ color:#17243b;
+ border:0;
+ border-bottom:1px solid #eee;
+ border-radius:0;
+ padding:17px 22px;
+ margin:0;
+ font-size:15px;
+}
+.hero{
+ background:linear-gradient(135deg,#09264c,#087b65);
+ color:white;
+ padding:38px 18px;
+ text-align:center;
+}
 .hero h1{font-size:27px}
-main{max-width:520px;margin:-15px auto 30px;padding:0 16px}
-.panel{background:white;border-radius:15px;padding:24px;box-shadow:0 8px 28px #152c5015}
-label{display:block;font-weight:bold;font-size:13px;margin:18px 0 8px}
-input{width:100%;padding:14px;border:1px solid #d5ddea;border-radius:9px;font-size:15px}
-button{width:100%;padding:15px;margin-top:20px;border:0;border-radius:9px;background:#087b65;color:white;font-weight:bold;font-size:16px}
-#result{margin-top:20px;padding:14px;border-radius:9px;background:#f0f5fa;line-height:1.7;display:none}
-.notice{margin-top:20px;background:#f0f5fa;padding:13px;border-radius:9px;font-size:12px;line-height:1.6;color:#52627a}
-footer{text-align:center;padding:20px;color:#778398;font-size:12px}
+main{
+ max-width:520px;
+ margin:-15px auto 30px;
+ padding:0 16px;
+}
+.panel{
+ background:white;
+ border-radius:17px;
+ padding:24px;
+ box-shadow:0 8px 28px #152c5015;
+}
+h2{font-size:24px}
+label{
+ display:block;
+ font-weight:bold;
+ font-size:14px;
+ margin:20px 0 8px;
+}
+input{
+ width:100%;
+ padding:16px;
+ border:1px solid #d5ddea;
+ border-radius:10px;
+ font-size:16px;
+}
+.action{
+ width:100%;
+ padding:16px;
+ margin-top:20px;
+ border:0;
+ border-radius:9px;
+ background:#087b65;
+ color:white;
+ font-weight:bold;
+ font-size:16px;
+ cursor:pointer;
+}
+.notice{
+ margin-top:20px;
+ background:#f0f5fa;
+ padding:15px;
+ border-radius:10px;
+ font-size:13px;
+ line-height:1.7;
+ color:#52627a;
+}
+#result{
+ margin-top:20px;
+ padding:14px;
+ border-radius:9px;
+ background:#f0f5fa;
+ line-height:1.7;
+ display:none;
+}
+#adminLogin,#adminPanel,#resetPasswordBox{
+ display:none;
+ max-width:520px;
+ margin:25px auto;
+ padding:22px;
+ background:white;
+ border-radius:14px;
+ box-shadow:0 8px 28px #152c5015;
+}
+footer{
+ text-align:center;
+ padding:22px;
+ color:#778398;
+ font-size:12px;
+}
 </style>
 </head>
+
 <body>
-<header><div class="brand">AUSTRALIA VISA PORTAL</div></header>
+
+<header>
+<button class="menuBtn" onclick="toggleMenu()">☰</button>
+<div class="brand">AUSTRALIA VISA PORTAL</div>
+</header>
+
+<nav class="menu" id="menu">
+<button onclick="showHome()">Home</button>
+<button onclick="showHome()">Application Status Check</button>
+<button onclick="showHome()">About Us</button>
+<button onclick="showHome()">Help & Support</button>
+<button onclick="showAdminLogin()">🔐 Admin Panel / Login</button>
+</nav>
+
+<section id="homePage">
 <section class="hero">
-<h1>Check Your Application Status</h1>
+<h1>Application Status Check</h1>
 <p>Independent Application Information Portal</p>
 </section>
+
 <main>
 <div class="panel">
 <h2>Application Status Check</h2>
+
 <form id="checkForm">
 <label for="app">Application ID</label>
 <input id="app" required placeholder="Enter Application ID">
+
 <label for="email">Email Address</label>
 <input id="email" type="email" required placeholder="Enter registered email">
-<button id="checkButton" type="submit">CHECK STATUS</button>
+
+<button class="action" id="checkButton" type="submit">
+CHECK STATUS
+</button>
 </form>
+
 <div id="result" role="status"></div>
-<div class="notice"><b>Important:</b> This is an independent private portal, not an official Australian Government website and is not affiliated with the Department of Home Affairs.</div>
+
+<div class="notice">
+<b>Important:</b> This is an independent private portal, not an official Australian Government website and is not affiliated with the Department of Home Affairs.
+</div>
 </div>
 </main>
-<footer>© 2026 Australia Visa Portal</footer>
+</section>
+
+<div id="adminLogin">
+<h2>Admin Login</h2>
+
+<input id="adminEmail" type="email" placeholder="Admin Email">
+<br><br>
+<input id="adminPassword" type="password" placeholder="Password">
+
+<button class="action" onclick="adminLoginNow()">LOGIN</button>
+
+<p id="adminMessage"></p>
+<button class="action" onclick="showHome()">Back to Home</button>
+</div>
+
+<div id="adminPanel">
+<h2>Admin Panel</h2>
+<p>Admin login successful.</p>
+<button class="action" onclick="adminLogout()">Logout</button>
+</div>
+
+<div id="resetPasswordBox">
+<h2>Reset Admin Password</h2>
+<input id="newPassword" type="password" placeholder="Enter new password">
+<button class="action" onclick="saveNewPassword()">Update Password</button>
+<p id="resetMessage"></p>
+</div>
+
+<footer>
+© 2026 Australia Visa Portal
+</footer>
+
 <script>
 const SUPABASE_URL = "https://vnngixpwhaijcsfknvsr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_krrLCwAPYmW1qyxweqe9gg_LX8Vitoi";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-if (window.location.hash.includes("type=recovery")) {
-  document.getElementById("resetPasswordBox").style.display = "block";
+
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+function toggleMenu(){
+ const menu=document.getElementById("menu");
+ menu.style.display=menu.style.display==="block"?"none":"block";
 }
-document.getElementById("checkForm").addEventListener("submit", async function(e){
+
+function hidePages(){
+ document.getElementById("homePage").style.display="none";
+ document.getElementById("adminLogin").style.display="none";
+ document.getElementById("adminPanel").style.display="none";
+ document.getElementById("resetPasswordBox").style.display="none";
+}
+
+function showHome(){
+ hidePages();
+ document.getElementById("homePage").style.display="block";
+ document.getElementById("menu").style.display="none";
+}
+
+function showAdminLogin(){
+ hidePages();
+ document.getElementById("adminLogin").style.display="block";
+ document.getElementById("menu").style.display="none";
+}
+
+document.getElementById("checkForm").addEventListener("submit",async function(e){
  e.preventDefault();
- const result = document.getElementById("result");
- const button = document.getElementById("checkButton");
- result.style.display = "block";
- result.textContent = "Checking application...";
- button.disabled = true;
- try {
-  const {data,error} = await db.rpc("check_application_status", {
-   p_application_id: document.getElementById("app").value.trim(),
-   p_email: document.getElementById("email").value.trim()
+
+ const result=document.getElementById("result");
+ const button=document.getElementById("checkButton");
+
+ result.style.display="block";
+ result.textContent="Checking application...";
+ button.disabled=true;
+
+ try{
+  const {data,error}=await db.rpc("check_application_status",{
+   p_application_id:document.getElementById("app").value.trim(),
+   p_email:document.getElementById("email").value.trim()
   });
+
   if(error) throw error;
-  if(!data || data.length === 0){
-   result.textContent = "No matching application found. Please check your details.";
-  } else {
-   const a = data[0];
-   result.innerHTML = "";
-   [["Application ID",a.application_id],["Name",a.full_name],["Visa Type",a.visa_type],["Status",a.status],["Last Updated",new Date(a.updated_at).toLocaleString("en-GB")]].forEach(([label,value])=>{
+
+  if(!data || data.length===0){
+   result.textContent="No matching application found. Please check your details.";
+  }else{
+   const a=data[0];
+   result.innerHTML="";
+
+   [
+    ["Application ID",a.application_id],
+    ["Name",a.full_name],
+    ["Visa Type",a.visa_type],
+    ["Status",a.status],
+    ["Last Updated",a.updated_at?new Date(a.updated_at).toLocaleString("en-GB"):"Not available"]
+   ].forEach(([label,value])=>{
     const row=document.createElement("p");
     const strong=document.createElement("strong");
     strong.textContent=label+": ";
-    row.append(strong,document.createTextNode(value || "Not available"));
+    row.append(strong,document.createTextNode(value||"Not available"));
     result.appendChild(row);
    });
   }
- } catch(err) {
-  result.textContent = "Unable to check status. Please try again later.";
+ }catch(err){
+  result.textContent="Unable to check status. Please try again later.";
   console.error(err);
- } finally {
-  button.disabled = false;
+ }finally{
+  button.disabled=false;
  }
 });
-</script>
-<div id="adminLogin" style="max-width:500px;margin:30px auto;padding:20px;background:white;border-radius:12px">
-  <h2>Admin Login</h2>
-  <input id="adminEmail" type="email" placeholder="Admin Email" style="width:100%;padding:12px;margin:8px 0">
-  <input id="adminPassword" type="password" placeholder="Password" style="width:100%;padding:12px;margin:8px 0">
-  <button onclick="adminLoginNow()" style="width:100%;padding:13px;background:#087b65;color:white;border:0;border-radius:8px">
-    LOGIN
-  </button>
-  <p id="adminMessage"></p>
-</div>
 
-<div id="adminPanel" style="display:none;padding:20px">
-  <h2>Admin Panel</h2>
-  <p>Admin login successful.</p>
-  <button onclick="adminLogout()">Logout</button>
-</div>
+async function adminLoginNow(){
+ const msg=document.getElementById("adminMessage");
+ msg.textContent="Checking...";
 
-<script>
-async function adminLoginNow() {
-  const msg = document.getElementById("adminMessage");
-  msg.textContent = "Checking...";
-  const email = document.getElementById("adminEmail").value.trim();
-  const password = document.getElementById("adminPassword").value;
+ const email=document.getElementById("adminEmail").value.trim();
+ const password=document.getElementById("adminPassword").value;
 
-  const {data, error} = await db.auth.signInWithPassword({email, password});
-  if (error) {
-    msg.textContent = "Login failed. Check your email and password.";
-    return;
-  }
+ const {data,error}=await db.auth.signInWithPassword({email,password});
 
-  const {data: admin, error: adminError} = await db
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", data.user.id)
-    .maybeSingle();
-
-  if (adminError) {
-  msg.textContent = "Admin check error: " + adminError.message;
-  await db.auth.signOut();
+ if(error){
+  msg.textContent="Login failed. Check your email and password.";
   return;
-}
+ }
 
-if (!admin) {
+ const {data:admin,error:adminError}=await db
+ .from("admin_users")
+ .select("user_id")
+ .eq("user_id",data.user.id)
+ .maybeSingle();
+
+ if(adminError || !admin){
   await db.auth.signOut();
-  msg.textContent = "No admin record found for this account.";
+  msg.textContent="Admin verification failed.";
   return;
+ }
+
+ document.getElementById("adminLogin").style.display="none";
+ document.getElementById("adminPanel").style.display="block";
 }
 
-  document.getElementById("adminLogin").style.display = "none";
-  document.getElementById("adminPanel").style.display = "block";
+async function adminLogout(){
+ await db.auth.signOut();
+ showHome();
+ document.getElementById("adminPassword").value="";
 }
 
-async function adminLogout() {
-  await db.auth.signOut();
-  document.getElementById("adminPanel").style.display = "none";
-  document.getElementById("adminLogin").style.display = "block";
+async function saveNewPassword(){
+ const password=document.getElementById("newPassword").value;
+ const msg=document.getElementById("resetMessage");
+
+ if(password.length<8){
+  msg.textContent="Password must be at least 8 characters.";
+  return;
+ }
+
+ const {error}=await db.auth.updateUser({password});
+
+ if(error){
+  msg.textContent="Password update failed. Please try again.";
+  return;
+ }
+
+ msg.textContent="Password updated successfully.";
 }
-</script>
- <div id="resetPasswordBox" style="display:none;max-width:500px;margin:30px auto;padding:20px;background:white;border-radius:12px">
-  <h2>Reset Admin Password</h2>
-  <input id="newPassword" type="password" placeholder="Enter new password" style="width:100%;padding:12px;margin:8px 0">
-  <button onclick="saveNewPassword()" style="width:100%;padding:13px;background:#087b65;color:white;border:0;border-radius:8px">
-    Update Password
-  </button>
-  <p id="resetMessage"></p>
-</div>
 
-<script>
-async function saveNewPassword() {
-  const password = document.getElementById("newPassword").value;
-  const msg = document.getElementById("resetMessage");
-
-  if (password.length < 8) {
-    msg.textContent = "Password must be at least 8 characters.";
-    return;
-  }
-
-  const { error } = await db.auth.updateUser({ password });
-
-  if (error) {
-    msg.textContent = "Password update failed. Please try again.";
-    return;
-  }
-
-  msg.textContent = "Password updated successfully.";
+if(window.location.hash.includes("type=recovery")){
+ hidePages();
+ document.getElementById("resetPasswordBox").style.display="block";
 }
 </script>
-  <script>
-if (window.location.hash.includes("type=recovery")) {
-  document.getElementById("resetPasswordBox").style.display = "block";
-}
-  </script>
+
 </body>
 </html>
