@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -356,6 +355,35 @@ if(window.location.hash.includes("type=recovery")){
  document.getElementById("resetPasswordBox").style.display="block";
 }
 </script>
+<div id="applicantFormBox" style="display:none; padding:20px; max-width:600px; margin:auto;">
+  <h2>আবেদনকারীর তথ্য যোগ করুন</h2>
 
+  <form id="applicantForm">
+    <label>আবেদনকারীর নাম</label>
+    <input type="text" id="applicantName" required>
+
+    <label>পাসপোর্ট নম্বর</label>
+    <input type="text" id="passportNumber" required>
+
+    <label>আবেদন নম্বর</label>
+    <input type="text" id="applicationNumber" required>
+
+    <label>ভিসার ধরন</label>
+    <input type="text" id="visaType" required>
+
+    <label>ভিসা স্ট্যাটাস</label>
+    <select id="visaStatus" required>
+      <option value="">স্ট্যাটাস নির্বাচন করুন</option>
+      <option value="Received">Received</option>
+      <option value="Processing">Processing</option>
+      <option value="Approved">Approved</option>
+      <option value="Refused">Refused</option>
+    </select>
+
+    <button type="submit">তথ্য সংরক্ষণ করুন</button>
+  </form>
+
+  <p id="applicantMessage"></p>
+ </div>
 </body>
 </html>
