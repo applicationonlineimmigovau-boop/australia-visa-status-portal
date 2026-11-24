@@ -366,7 +366,9 @@ async function adminLogout(){
  showHome();
  document.getElementById("adminPassword").value="";
 }
-
+function showApplicantForm(){
+  document.getElementById("applicantFormBox").style.display="block";
+                                                     }
 async function saveNewPassword(){
  const password=document.getElementById("newPassword").value;
  const msg=document.getElementById("resetMessage");
