@@ -378,7 +378,37 @@ async function adminLogout(){
 }
 function showApplicantForm(){
   document.getElementById("applicantFormBox").style.display="block";
-                                                     }
+    document.getElementById("applicantForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const msg = document.getElementById("applicantMessage");
+  const button = this.querySelector('button[type="submit"]');
+
+  msg.textContent = "তথ্য সংরক্ষণ হচ্ছে...";
+  button.disabled = true;
+
+  try {
+    const { error } = await db.from("applicants").insert({
+      full_name: document.getElementById("applicantName").value.trim(),
+      email: document.getElementById("applicantEmail").value.trim(),
+      passport_number: document.getElementById("passportNumber").value.trim(),
+      application_id: document.getElementById("applicationNumber").value.trim(),
+      visa_type: document.getElementById("visaType").value.trim(),
+      status: document.getElementById("visaStatus").value
+    });
+
+    if (error) throw error;
+
+    msg.textContent = "আবেদনকারীর তথ্য সংরক্ষণ হয়েছে।";
+    this.reset();
+
+  } catch (err) {
+    console.error(err);
+    msg.textContent = "তথ্য সংরক্ষণ হয়নি। Application ID আগে থেকেই আছে কি না এবং অ্যাডমিন অনুমতি ঠিক আছে কি না দেখুন।";
+  } finally {
+    button.disabled = false;
+  }
+});                                                 }
 async function saveNewPassword(){
  const password=document.getElementById("newPassword").value;
  const msg=document.getElementById("resetMessage");
