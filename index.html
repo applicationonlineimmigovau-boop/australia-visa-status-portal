@@ -381,8 +381,11 @@ async function adminLogout(){
  document.getElementById("adminPassword").value="";
 }
 function showApplicantForm(){
-  document.getElementById("applicantFormBox").style.display="block";
-    document.getElementById("applicantForm").addEventListener("submit", async function(e){
+function showApplicantForm(){
+  document.getElementById("applicantFormBox").style.display = "block";
+}
+
+document.getElementById("applicantForm").addEventListener("submit", async function(e){
   e.preventDefault();
 
   const msg = document.getElementById("applicantMessage");
